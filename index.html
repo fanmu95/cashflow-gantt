@@ -15,6 +15,7 @@
   --panel-bg:#f8fafc; --head-bg:#fafbfe; --blank-bg:#fafbfe; --hover:#f0f7ff;
   --ring:rgba(31,36,48,.28); --wm:rgba(15,23,42,.06); --wm-neg:rgba(185,28,28,.09);
   --input-bg:#ffffff; --circle-neg-bg:rgba(255,255,255,.6); --red-bg-hover:#ffd4d9;
+  color-scheme:light;
 }
 [data-theme="dark"]{
   --bg:#0f172a; --card:#1e293b; --line:#334155;
@@ -25,6 +26,7 @@
   --panel-bg:#283548; --head-bg:#23324a; --blank-bg:#16223a; --hover:#26364e;
   --ring:rgba(226,232,240,.28); --wm:rgba(226,232,240,.07); --wm-neg:rgba(248,113,113,.14);
   --input-bg:#0f172a; --circle-neg-bg:rgba(15,23,42,.45); --red-bg-hover:rgba(239,68,68,.30);
+  color-scheme:dark;
 }
 *{box-sizing:border-box; margin:0; padding:0}
 body{font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif; background:var(--bg); color:var(--ink); padding:16px}
@@ -39,25 +41,37 @@ h1{font-size:22px; display:flex; align-items:center; gap:8px}
 #monthLabel{min-width:128px; text-align:center; font-weight:700; font-size:16px}
 #todayBtn{color:var(--blue); font-weight:600}
 .spacer{flex:1}
-.init-bal{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--sub)}
-.init-bal input{width:110px; padding:7px 10px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-family:inherit; background:var(--input-bg); color:var(--ink)}
-.init-bal input:focus{outline:none; border-color:var(--blue)}
 .hint{font-size:12px; color:var(--sub)}
 
-.summary{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:12px}
+.summary{display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:12px}
 .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; box-shadow:0 1px 2px rgba(16,24,40,.04)}
 .card .k{font-size:12px; color:var(--sub); margin-bottom:6px}
 .card .v{font-size:19px; font-weight:700}
 .v.in{color:var(--green-deep)} .v.out{color:var(--red-deep)}
+.dev-detail{font-size:11px; color:var(--sub); margin-top:4px; line-height:1.5}
+.actual-row{display:flex; align-items:stretch; gap:8px; margin-top:8px; flex-wrap:wrap}
+.actual-row input{flex:1 1 170px; min-width:0; padding:9px 12px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-family:inherit; background:var(--input-bg); color:var(--ink); height:38px}
+.actual-row input:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.actual-row button{padding:0 16px; height:38px; border-radius:8px; cursor:pointer; font-size:13px; border:1px solid var(--line); background:var(--card); color:var(--ink); font-family:inherit; white-space:nowrap; flex:none}
+.actual-row button:hover{background:var(--hover); border-color:var(--blue); color:var(--blue)}
+.actual-row .clear-act{color:var(--red-deep)}
+.actual-row .clear-act:hover{background:var(--red-bg); border-color:var(--red)}
+.actual-box{background:var(--panel-bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin-top:8px; font-size:13px; line-height:1.7; word-break:break-word}
+.actual-box .dev-line{font-weight:700}
+.actual-box .dev-line.pos{color:var(--green-deep)}
+.actual-box .dev-line.neg{color:var(--red-deep)}
+.actual-box .dev-hint{font-size:11px; color:var(--sub); margin-top:3px; line-height:1.6}
+.rec-hint-box{background:var(--panel-bg); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:12px; color:var(--sub); line-height:1.6; margin-bottom:12px}
 
 .chart-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 14px 10px; margin-bottom:12px; box-shadow:0 1px 2px rgba(16,24,40,.04)}
 .chart-card .t{font-size:13px; color:var(--sub); margin-bottom:8px}
-svg#spark{width:100%; height:140px; display:block}
+svg#spark{width:100%; height:190px; display:block}
 .chart-legend{display:flex; gap:16px; margin-top:8px; font-size:12px; color:var(--sub)}
 .chart-legend .lg{display:inline-flex; align-items:center; gap:6px}
 .line-sample{width:18px; height:3px; border-radius:2px; display:inline-block}
 .line-sample.g{background:var(--green)}
 .line-sample.r{background:var(--red)}
+.line-sample.b{background:var(--blue)}
 .chart-foot{font-size:12px; color:var(--sub); margin-top:6px}
 
 .calendar{background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:0 1px 2px rgba(16,24,40,.04)}
@@ -88,6 +102,9 @@ svg#spark{width:100%; height:140px; display:block}
 .day-net{font-size:12px; color:var(--sub); margin-top:1px}
 .day-cum{font-size:14px; font-weight:700; margin-top:2px}
 .day-cell.negative .day-cum{color:var(--red-deep)}
+.day-actual{font-size:10px; font-weight:700; margin-top:2px}
+.day-actual.in{color:var(--green-deep)}
+.day-actual.out{color:var(--red-deep)}
 .foot{font-size:12px; color:var(--sub); margin-top:10px; line-height:1.7}
 
 .table-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-top:12px; box-shadow:0 1px 2px rgba(16,24,40,.04)}
@@ -123,6 +140,9 @@ tfoot .in{color:var(--green-deep)} tfoot .out{color:var(--red-deep)}
 #tip .tip-title{font-weight:700; font-size:13px; margin-bottom:5px}
 #tip .tip-cum{color:var(--green-deep)}
 #tip .tip-cum.neg{color:var(--red-deep)}
+#tip .tip-actual{margin:4px 0 5px; padding:4px 6px; background:var(--panel-bg); border-radius:6px; font-size:12px}
+#tip .tip-actual b.pos{color:var(--green-deep)}
+#tip .tip-actual b.neg{color:var(--red-deep)}
 #tip .tip-item{display:flex; gap:7px; align-items:center; padding:1px 0}
 #tip .ti-name{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 #tip .ti-amt{font-weight:700; flex:none}
@@ -146,11 +166,17 @@ body{transition:background .2s, color .2s}
 .edit-mask{z-index:55}
 .edit-box{width:min(420px,94vw); text-align:left}
 .edit-title{font-size:16px; font-weight:700; margin-bottom:14px}
-.edit-fields{display:grid; grid-template-columns:1fr 1fr; gap:10px 12px; margin-bottom:18px}
-.edit-fields label{display:flex; flex-direction:column; gap:5px; font-size:12px; color:var(--sub)}
+.edit-fields{display:grid; grid-template-columns:1fr 1fr; gap:12px 12px; margin-bottom:18px}
+.edit-fields label{display:flex; flex-direction:column; gap:6px; font-size:12px; color:var(--sub); font-weight:600; letter-spacing:.02em}
 .edit-fields label.full{grid-column:1/-1}
-.edit-fields input,.edit-fields select{padding:8px 10px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-family:inherit; color:var(--ink); background:var(--input-bg)}
-.edit-fields input:focus,.edit-fields select:focus{outline:none; border-color:var(--blue)}
+.edit-fields input,.edit-fields select{padding:9px 12px; border:1.5px solid var(--line); border-radius:9px; font-size:14px; font-family:inherit; color:var(--ink); background:var(--input-bg); height:40px; transition:border-color .15s, box-shadow .15s}
+.edit-fields input:hover,.edit-fields select:hover{border-color:var(--ring)}
+.edit-fields input:focus,.edit-fields select:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.13)}
+.edit-fields select{appearance:none; -webkit-appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--sub) 50%),linear-gradient(135deg,var(--sub) 50%,transparent 50%); background-position:calc(100% - 17px) 17px,calc(100% - 12px) 17px; background-size:5px 5px,5px 5px; background-repeat:no-repeat; padding-right:32px; cursor:pointer}
+.edit-fields input[type="date"]{position:relative; padding-right:38px; cursor:pointer; font-variant-numeric:tabular-nums}
+.edit-fields input[type="date"]::-webkit-calendar-picker-indicator{position:absolute; right:6px; top:50%; transform:translateY(-50%); width:26px; height:26px; padding:5px; border-radius:7px; cursor:pointer; opacity:.75; background-color:transparent; transition:background-color .15s, opacity .15s}
+.edit-fields input[type="date"]::-webkit-calendar-picker-indicator:hover{background-color:var(--hover); opacity:1}
+.edit-fields input[type="number"]{font-variant-numeric:tabular-nums}
 #editSave{background:var(--blue); color:#fff; border-color:var(--blue); font-weight:600}
 #editSave:hover{filter:brightness(1.1)}
 #recSave{background:var(--blue); color:#fff; border-color:var(--blue); font-weight:600}
@@ -224,10 +250,6 @@ body{transition:background .2s, color .2s}
       <button id="todayBtn">今天</button>
     </div>
     <div class="spacer"></div>
-    <div class="init-bal">
-      <label for="initBal">期初余额</label>
-      <input id="initBal" type="number" step="0.01" placeholder="0" />
-    </div>
     <button id="recBtn" title="管理周期账单（每月 / 每周 / 每两周自动生成）">🔄 周期</button>
     <button id="trashBtn" title="回收站：误删恢复，删除的项目保留 30 天">🗑️ 回收站</button>
     <button id="syncBtn" title="GitHub Secret Gist 云同步（无需仓库）">☁️ 同步</button>
@@ -243,15 +265,17 @@ body{transition:background .2s, color .2s}
     <div class="card"><div class="k">本月预计花费</div><div class="v out" id="sumOut">¥0</div></div>
     <div class="card"><div class="k">本月预计净额</div><div class="v" id="sumNet">¥0</div></div>
     <div class="card"><div class="k">月末预计剩余</div><div class="v" id="sumEnd">¥0</div></div>
+    <div class="card"><div class="k">最近实际余额偏差</div><div class="v" id="sumDev">—</div><div class="dev-detail" id="sumDevDetail"></div></div>
   </div>
 
   <div class="chart-card">
     <div class="t">📈 预计累计余额走势</div>
     <svg id="spark" viewBox="0 0 1000 140" preserveAspectRatio="none"></svg>
     <div class="chart-legend">
-      <span class="lg"><span class="line-sample g"></span>余额为正</span>
-      <span class="lg"><span class="line-sample r"></span>余额为负</span>
-      <span class="lg"><span style="width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--green)"></span>每日数据点（悬停看数值）</span>
+      <span class="lg"><span class="line-sample g"></span>预计余额为正</span>
+      <span class="lg"><span class="line-sample r"></span>预计余额为负</span>
+      <span class="lg"><span class="line-sample b"></span>实际余额（已记录）</span>
+      <span class="lg"><span style="width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--green)"></span>每日数据点（悬停看数值，关键日标金额）</span>
     </div>
     <div class="chart-foot" id="chartFoot"></div>
   </div>
@@ -290,7 +314,7 @@ body{transition:background .2s, color .2s}
   </div>
 
   <div class="foot">
-    💡 使用说明：① 在顶部设置「期初余额」（当前已持有的钱）；② 点击任意日期填写当天预计的入账 / 花费项目；③ 鼠标悬停日期可快速预览当天项目与累计剩余；④ 每天的格子会显示：入账(+绿) / 花费(-红) / 当日净额 / 累计剩余；⑤ 当累计剩余为负时，当天背景整格标红并显示 ⚠；⑥ 「导出 / 导入」可备份数据到 JSON 文件；⑦ 点击任意日期打开详情，用 ✏️ 可编辑项目并调整日期。
+    💡 使用说明：① 点击任意日期，像普通账目一样填入你的入账 / 花费项目（手头的本金就直接记一笔「入账」即可，程序只做累加，不再有内置的期初余额）；② 鼠标悬停日期可快速预览当天项目与累计剩余；④ 每天的格子会显示：入账(+绿) / 花费(-红) / 当日净额 / 累计剩余；⑤ 当累计剩余为负时，当天背景整格标红并显示 ⚠；⑥ 「导出 / 导入」可备份数据到 JSON 文件；⑦ 点击任意日期打开详情，用 ✏️ 可编辑项目并调整日期；⑧ 🎯 可选：在日期详情里记录「当天实际账户余额」，用于对比计划与实际的偏差（日历格显示「实+/-」，走势图叠加蓝色实际点，顶部卡片显示最近偏差）；⑨ 🔁 周期账单某期如需提前 / 延后（如提前还款），在详情里用 ✏️ 把该笔改到实际扣款的日期即可，原日期本期不再重复生成。
   </div>
 </div>
 
@@ -314,6 +338,13 @@ body{transition:background .2s, color .2s}
     <div class="modal-body">
       <div class="sec-label">📋 项目明细</div>
       <div id="entryList"></div>
+      <div class="sec-label">🎯 当日实际余额</div>
+      <div class="actual-row">
+        <input type="number" id="actualVal" min="0" step="0.01" placeholder="当天实际账户余额" />
+        <button id="actualSave">记录实际</button>
+        <button id="actualClear" class="clear-act" style="display:none">清除</button>
+      </div>
+      <div class="actual-box" id="actualBox" style="display:none"></div>
       <div class="sec-label">➕ 新增项目</div>
       <div class="add-form">
         <select id="eType">
@@ -354,6 +385,7 @@ body{transition:background .2s, color .2s}
       <label class="full">项目名称 <input type="text" id="editName" maxlength="40" placeholder="如：工资 / 房租" /></label>
       <label>金额 <input type="number" id="editAmt" min="0" step="0.01" placeholder="0.00" /></label>
     </div>
+    <div class="rec-hint-box" id="editRecHint" style="display:none"></div>
     <div class="box-btns">
       <button id="editCancel">取消</button>
       <button id="editSave">保存</button>
@@ -431,32 +463,53 @@ body{transition:background .2s, color .2s}
 <script>
 const $ = s => document.querySelector(s);
 const STORE_KEY = 'cashflow-planner-v1';
-const DATA_VERSION = 1;
+const DATA_VERSION = 3;
 const WEEK = ['一','二','三','四','五','六','日'];
 
+/* 统一数据规范化：新版本不再有“期初余额”概念，所有金额 = 用户录入记录的累加。
+   为兼容旧数据，若发现遗留的 initialBalance，会把它转成一条可见的普通入账记录（可自由改名/改日期/删除）。 */
+function normalizeState(d){
+  const st = {
+    entries: (d && typeof d.entries === 'object' && d.entries) ? d.entries : {},
+    recurring: Array.isArray(d && d.recurring) ? d.recurring : [],
+    trash: Array.isArray(d && d.trash) ? d.trash : [],
+    actuals: (d && d.actuals && typeof d.actuals === 'object') ? d.actuals : {},
+    version: DATA_VERSION
+  };
+  const legacy = (d && typeof d.initialBalance === 'number') ? d.initialBalance : 0;
+  if(legacy !== 0){
+    const keys = Object.keys(st.entries).sort();
+    const base = keys.length ? keys[0].slice(0, 7) + '-01' : keyOf(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    st.entries[base] = st.entries[base] || [];
+    const dup = st.entries[base].some(e => e.migrated && e.name === '初始资金');
+    if(!dup){
+      st.entries[base].push({ id: Date.now() + Math.floor(Math.random() * 1000), type: legacy > 0 ? 'in' : 'out', name: '初始资金', amount: Math.abs(legacy), ts: Date.now(), migrated: true });
+    }
+  }
+  return st;
+}
 function load(){
   try{
     const raw = localStorage.getItem(STORE_KEY);
     if(raw){
       const d = JSON.parse(raw);
-      if(d && typeof d.initialBalance === 'number' && d.entries && typeof d.entries === 'object'){
-        return {
-          initialBalance: d.initialBalance,
-          entries: d.entries,
-          recurring: Array.isArray(d.recurring) ? d.recurring : [],
-          trash: Array.isArray(d.trash) ? d.trash : [],
-          version: typeof d.version === 'number' ? d.version : DATA_VERSION
-        };
+      if(d && d.entries && typeof d.entries === 'object'){
+        const st = normalizeState(d);
+        if(typeof d.initialBalance === 'number' && d.initialBalance !== 0){
+          // 迁移立即落地，避免每次加载重复转换
+          try{ localStorage.setItem(STORE_KEY, JSON.stringify(st)); }catch(e){}
+        }
+        return st;
       }
     }
   }catch(e){}
-  return { initialBalance: 0, entries: {}, recurring: [], trash: [], version: DATA_VERSION };
+  return { entries: {}, recurring: [], trash: [], actuals: {}, version: DATA_VERSION };
 }
 let state = load();
 let view = (() => { const n = new Date(); return { y: n.getFullYear(), m: n.getMonth() }; })();
 let currentK = null;
 
-function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+function save(){ state.version = DATA_VERSION; localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 function keyOf(y, m, d){ return y + '-' + String(m + 1).padStart(2,'0') + '-' + String(d).padStart(2,'0'); }
 function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 const fmt = n => Number(n).toLocaleString('zh-CN', { maximumFractionDigits: 2 });
@@ -468,26 +521,64 @@ function totalsOf(k){
   return { tin, tout };
 }
 function netOf(k){ const t = totalsOf(k); return t.tin - t.tout; }
-function cumulativeUpTo(k){
-  let r = state.initialBalance;
-  Object.keys(state.entries).sort().forEach(key => { if(key > k) return; r += netOf(key); });
+/* ---- 实际余额与偏差 ---- */
+function actualOf(k){ const a = (state.actuals || {})[k]; return (typeof a === 'number') ? a : null; }
+function latestActualKey(upTo){
+  const keys = Object.keys(state.actuals || {}).filter(x => !upTo || x <= upTo).sort();
+  for(let i = keys.length - 1; i >= 0; i--){ const v = actualOf(keys[i]); if(v !== null) return keys[i]; }
+  return null;
+}
+/* 基准：严格早于 k 的最近一次实际余额；没有实际记录时从 0 开始累加用户录入的记录 */
+function baselineBefore(k){
+  const keys = Object.keys(state.actuals || {}).filter(x => x < k).sort();
+  for(let i = keys.length - 1; i >= 0; i--){
+    const v = actualOf(keys[i]);
+    if(v !== null) return { key: keys[i], val: v };
+  }
+  return { key: null, val: 0 };
+}
+/* 预计累计：基准 + 基准日之后到 k 的所有净额 */
+function plannedFrom(k){
+  const b = baselineBefore(k);
+  let r = b.val;
+  Object.keys(state.entries).sort().forEach(key => {
+    if(b.key){ if(key > b.key && key <= k) r += netOf(key); }
+    else if(key <= k) r += netOf(key);
+  });
   return r;
+}
+/* 展示累计：当天有实际记录显示实际，否则显示预计 */
+function cumulativeUpTo(k){
+  const a = actualOf(k);
+  return a !== null ? a : plannedFrom(k);
+}
+/* 偏差 = 当天实际 − 当天预计（预计不含当天自己的实际记录） */
+function deviationOf(k){
+  const a = actualOf(k);
+  if(a === null) return null;
+  return a - plannedFrom(k);
+}
+function saveActual(k, val){
+  state.actuals = state.actuals || {};
+  state.actuals[k] = val;
+  save(); render();
+  if($('#dayModal').classList.contains('open') && currentK === k) openDay(k);
+}
+function clearActual(k){
+  if(state.actuals){ delete state.actuals[k]; }
+  save(); render();
+  if($('#dayModal').classList.contains('open') && currentK === k) openDay(k);
 }
 
 function buildMonth(y, m){
   const daysInMonth = new Date(y, m + 1, 0).getDate();
   const offset = (new Date(y, m, 1).getDay() + 6) % 7;
   const days = [];
-  let running = state.initialBalance;
-  const startKey = keyOf(y, m, 1);
-  const keys = Object.keys(state.entries).sort();
-  for(const k of keys){ if(k >= startKey) break; running += netOf(k); }
   let maxA = 0;
   for(let d = 1; d <= daysInMonth; d++){
     const k = keyOf(y, m, d);
     const { tin, tout } = totalsOf(k);
-    running += tin - tout;
-    days.push({ y, m, d, k, kin: tin, kout: tout, net: tin - tout, cum: running });
+    days.push({ y, m, d, k, kin: tin, kout: tout, net: tin - tout, cum: cumulativeUpTo(k) });
     maxA = Math.max(maxA, tin, tout);
   }
   return { days, offset, maxA };
@@ -499,16 +590,46 @@ function sparkSVG(days, W, H){
   const C_G = css.getPropertyValue('--green').trim() || '#10b981';
   const C_R = css.getPropertyValue('--red').trim() || '#ef4444';
   const C_Z = css.getPropertyValue('--sub').trim() || '#94a3b8';
-  const P = 8;
+  const C_L = css.getPropertyValue('--line').trim() || '#e5e9f2';
+  const C_B = css.getPropertyValue('--blue').trim() || '#2563eb';
+  const L = 64, R = 16, T = 18, B = 30;
   const vals = days.map(d => d.cum);
-  const lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
+  const nums = vals.filter(v => v !== null);
+  const actVals = days.map(d => actualOf(d.k)).filter(v => v !== null);
+  if(!nums.length && !actVals.length) return '';
+  const dataLo = Math.min(...nums, ...actVals), dataHi = Math.max(...nums, ...actVals);
+  const span0 = (dataHi - dataLo) || Math.abs(dataHi) || 100;
+  let lo = dataLo - span0 * 0.10, hi = dataHi + span0 * 0.10;
+  if(dataLo < 0 && dataHi > 0){ lo = Math.min(lo, 0); hi = Math.max(hi, 0); }
   const span = (hi - lo) || 1;
-  const X = i => P + i * (W - 2 * P) / Math.max(1, days.length - 1);
-  const Y = v => H - P - (v - lo) / span * (H - 2 * P);
+  const X = i => L + i * (W - L - R) / Math.max(1, days.length - 1);
+  const Y = v => H - B - (v - lo) / span * (H - T - B);
   const yZero = Y(0);
+  let lastValid = -1;
+  vals.forEach((v, i) => { if(v !== null) lastValid = i; });
+  let h = '';
+  // Y 轴刻度与网格线
+  const ticks = niceTicks(lo, hi, 4);
+  ticks.forEach(t => {
+    const y = Y(t);
+    h += '<line x1="' + L + '" y1="' + y.toFixed(1) + '" x2="' + (W - R) + '" y2="' + y.toFixed(1) + '" stroke="' + C_L + '" stroke-width="1"/>';
+    h += '<text x="' + (L - 7) + '" y="' + (y + 3.5).toFixed(1) + '" text-anchor="end" font-size="10.5" fill="' + C_Z + '">' + fmtAxis(t) + '</text>';
+  });
+  // 零线加粗提示
+  if(lo < 0 && hi > 0){
+    h += '<line x1="' + L + '" y1="' + yZero.toFixed(1) + '" x2="' + (W - R) + '" y2="' + yZero.toFixed(1) + '" stroke="' + C_Z + '" stroke-width="1.3" stroke-dasharray="4 4" opacity="0.85"/>';
+  }
+  // X 轴日期标签（每月 1 日与 5 的倍数）
+  days.forEach((d, i) => {
+    if(d.d === 1 || d.d % 5 === 0){
+      h += '<text x="' + X(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10.5" fill="' + C_Z + '">' + d.d + '日</text>';
+    }
+  });
+  // 折线段（跳过缺失段）
   let segs = [];
   for(let i = 0; i < days.length - 1; i++){
     const v1 = vals[i], v2 = vals[i + 1];
+    if(v1 === null || v2 === null) continue;
     const x1 = X(i), y1 = Y(v1), x2 = X(i + 1), y2 = Y(v2);
     if((v1 >= 0 && v2 >= 0) || (v1 < 0 && v2 < 0)){
       segs.push({ x1, y1, x2, y2, neg: v1 < 0 });
@@ -521,21 +642,61 @@ function sparkSVG(days, W, H){
   }
   let runs = [], cur = null;
   segs.forEach(s => { if(!cur || cur.neg !== s.neg){ cur = { neg: s.neg, parts: [] }; runs.push(cur); } cur.parts.push(s); });
-  let h = '<line x1="' + P + '" y1="' + yZero + '" x2="' + (W - P) + '" y2="' + yZero + '" stroke="' + C_Z + '" stroke-width="1.5" stroke-dasharray="5 5"/>';
   runs.forEach(r => {
     let d = '';
     r.parts.forEach((s, i) => { d += (i === 0 ? 'M' + s.x1 + ',' + s.y1 + ' ' : '') + 'L' + s.x2 + ',' + s.y2 + ' '; });
     h += '<path d="' + d + '" fill="none" stroke="' + (r.neg ? C_R : C_G) + '" stroke-width="3" stroke-linejoin="round"/>';
     const first = r.parts[0], last = r.parts[r.parts.length - 1];
-    let a = 'M' + first.x1 + ',' + yZero + ' L' + first.x1 + ',' + first.y1 + ' ';
-    r.parts.forEach(s => { a += 'L' + s.x2 + ',' + s.y2 + ' '; });
-    a += 'L' + last.x2 + ',' + yZero + ' Z';
-    h += '<path d="' + a + '" fill="' + (r.neg ? C_R : C_G) + '" fill-opacity="0.12" stroke="none"/>';
+    const yBot = (H - B).toFixed(1);
+    let a = 'M' + first.x1.toFixed(1) + ',' + yBot + ' L' + first.x1.toFixed(1) + ',' + first.y1.toFixed(1) + ' ';
+    r.parts.forEach(s => { a += 'L' + s.x2.toFixed(1) + ',' + s.y2.toFixed(1) + ' '; });
+    a += 'L' + last.x2.toFixed(1) + ',' + yBot + ' Z';
+    h += '<path d="' + a + '" fill="' + (r.neg ? C_R : C_G) + '" fill-opacity="0.10" stroke="none"/>';
   });
+  // 数据点与金额标注（交易日 + 月末点带标注，自动避让）
+  let lastLX = -1e9, lastLSide = null;
   days.forEach((d, i) => {
-    h += '<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(vals[i]).toFixed(1) + '" r="3" fill="' + (vals[i] < 0 ? C_R : C_G) + '"><title>' + (d.m + 1) + '月' + d.d + '日 累计 ' + money(vals[i]) + '</title></circle>';
+    if(vals[i] === null) return;
+    const px = X(i), py = Y(vals[i]);
+    h += '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="3" fill="' + (vals[i] < 0 ? C_R : C_G) + '"><title>' + (d.m + 1) + '月' + d.d + '日 累计 ' + money(vals[i]) + '</title></circle>';
+    if(d.net !== 0 || i === lastValid){
+      const above = (py - T) > 36;
+      const collide = (lastLSide === above) && Math.abs(px - lastLX) < 56;
+      if(!collide){
+        const ly = above ? (py - 9) : (py + 16);
+        h += '<text x="' + px.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle" font-size="10" font-weight="700" fill="' + (vals[i] < 0 ? C_R : C_G) + '">' + (vals[i] < 0 ? '-¥' : '¥') + fmt(Math.abs(vals[i])) + '</text>';
+        lastLX = px; lastLSide = above;
+      }
+    }
+  });
+  // 实际余额叠加（蓝色菱形点 + 与计划点的竖向连线）
+  days.forEach((d, i) => {
+    const a = actualOf(d.k);
+    if(a === null) return;
+    const ax = X(i).toFixed(1), ay = Y(a).toFixed(1);
+    if(vals[i] !== null){
+      h += '<line x1="' + ax + '" y1="' + Y(vals[i]).toFixed(1) + '" x2="' + ax + '" y2="' + ay + '" stroke="' + C_B + '" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.7"/>';
+    }
+    h += '<rect x="' + (X(i) - 3.2).toFixed(1) + '" y="' + (Y(a) - 3.2).toFixed(1) + '" width="6.4" height="6.4" rx="1" transform="rotate(45 ' + ax + ' ' + ay + ')" fill="' + C_B + '"><title>' + (d.m + 1) + '月' + d.d + '日 实际 ' + money(a) + (vals[i] !== null ? '（计划 ' + money(vals[i]) + '，偏差 ' + (a - vals[i] >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(a - vals[i])) + '）' : '') + '</title></rect>';
   });
   return h;
+}
+function niceTicks(lo, hi, n){
+  const span = (hi - lo) || 1;
+  const step0 = span / n;
+  const mag = Math.pow(10, Math.floor(Math.log10(step0)));
+  let step = mag;
+  const mults = [1, 2, 2.5, 5, 10];
+  for(const m of mults){ if(m * mag >= step0){ step = m * mag; break; } }
+  const ticks = [];
+  for(let t = Math.ceil(lo / step) * step; t <= hi + 1e-9; t += step) ticks.push(t);
+  if(!ticks.length) ticks.push(lo, hi);
+  return ticks;
+}
+function fmtAxis(v){
+  const a = Math.abs(v);
+  if(a >= 10000) return (v / 10000).toFixed(1).replace(/\.0$/, '') + '万';
+  return String(Math.round(v));
 }
 
 function render(){
@@ -546,7 +707,7 @@ function render(){
 
   let tin = 0, tout = 0;
   days.forEach(d => { tin += d.kin; tout += d.kout; });
-  const lastCum = days.length ? days[days.length - 1].cum : state.initialBalance;
+  const lastCum = days.length ? days[days.length - 1].cum : 0;
   $('#sumIn').textContent = '+¥' + fmt(tin);
   $('#sumOut').textContent = '-¥' + fmt(tout);
   const netEl = $('#sumNet');
@@ -556,12 +717,33 @@ function render(){
   endEl.textContent = money(lastCum);
   endEl.className = 'v' + (lastCum < 0 ? ' out' : ' in');
 
+  // 最近实际余额偏差卡片
+  const lastAK = latestActualKey();
+  const devEl = $('#sumDev'), devDetail = $('#sumDevDetail');
+  if(lastAK){
+    const aVal = actualOf(lastAK);
+    const dev = deviationOf(lastAK);
+    devEl.textContent = (dev >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(dev));
+    devEl.className = 'v ' + (dev >= 0 ? 'in' : 'out');
+    devDetail.textContent = dateLabel(lastAK) + ' 实际 ' + money(aVal) + '（预计 ' + money(plannedFrom(lastAK)) + '）';
+  }else{
+    devEl.textContent = '—';
+    devEl.className = 'v';
+    devDetail.textContent = '点开某天可记录实际余额';
+  }
+
   const sw = Math.max(300, $('#spark').clientWidth || 1000);
-  $('#spark').setAttribute('viewBox', '0 0 ' + sw + ' 140');
-  if(Object.keys(state.entries).length){
-    $('#spark').innerHTML = sparkSVG(days, sw, 140);
+  $('#spark').setAttribute('viewBox', '0 0 ' + sw + ' 190');
+  if(Object.keys(state.entries).length || Object.keys(state.actuals || {}).length){
+    $('#spark').innerHTML = sparkSVG(days, sw, 190);
     const cumVals = days.map(x => x.cum);
-    $('#chartFoot').innerHTML = '月初累计 ' + money(days[0].cum) + ' → 月末累计 ' + money(days[days.length - 1].cum) + ' · 期间最高 ' + money(Math.max.apply(null, cumVals)) + ' / 最低 ' + money(Math.min.apply(null, cumVals));
+    let footTxt = '月初累计 ' + money(days[0].cum) + ' → 月末累计 ' + money(days[days.length - 1].cum) + ' · 期间最高 ' + money(Math.max.apply(null, cumVals)) + ' / 最低 ' + money(Math.min.apply(null, cumVals));
+    const lastAK = latestActualKey();
+    if(lastAK){
+      const dv = deviationOf(lastAK);
+      footTxt += ' · 最近实际偏差 <b class="' + (dv >= 0 ? 'in' : 'out') + '">' + (dv >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(dv)) + '</b>（' + dateLabel(lastAK) + '）';
+    }
+    $('#chartFoot').innerHTML = footTxt;
   }else{
     $('#spark').innerHTML = '';
     $('#chartFoot').innerHTML = '暂无数据：在日历中添加项目后，这里会自动生成余额走势';
@@ -587,12 +769,14 @@ function render(){
       ? '<div class="day-totals">' + (d.kin > 0 ? '<span class="in">+¥' + fmt(d.kin) + '</span>' : '') + (d.kout > 0 ? '<span class="out">-¥' + fmt(d.kout) + '</span>' : '') + '</div>'
       : '';
     const netTxt = d.net === 0 ? '净 ¥0' : (d.net > 0 ? '净 +¥' : '净 -¥') + fmt(Math.abs(d.net));
+    const dev = deviationOf(d.k);
+    const devTxt = dev === null ? '' : '<div class="day-actual ' + (dev >= 0 ? 'in' : 'out') + '">实' + (dev >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(dev)) + '</div>';
     cell.innerHTML =
       '<span class="wm">' + d.d + '</span>' +
-      '<div class="day-top"><span class="day-num' + (dow === 0 || dow === 6 ? ' weekend' : '') + '">' + d.d + '</span>' + (d.cum < 0 ? '<span class="neg-flag">⚠</span>' : '') + '</div>' +
+      '<div class="day-top"><span class="day-num' + (dow === 0 || dow === 6 ? ' weekend' : '') + '">' + d.d + '</span>' + (d.cum < 0 ? '<span class="neg-flag">⚠</span>' : '') + (dev !== null ? '<span class="neg-flag" style="color:var(--blue)">🎯</span>' : '') + '</div>' +
       bars + totals +
       '<div class="day-net">' + netTxt + '</div>' +
-      '<div class="day-cum">' + money(d.cum) + '</div>';
+      '<div class="day-cum">' + money(d.cum) + '</div>' + devTxt;
     cell.addEventListener('click', () => openDay(d.k));
     body.appendChild(cell);
   });
@@ -944,17 +1128,11 @@ async function syncDownload(){
     if(!f){ setSyncStatus('✗ Gist 中找不到文件「' + cfg.file + '」', false); return; }
     if(f.truncated){ setSyncStatus('✗ 云端文件过大，无法读取', false); return; }
     const d = JSON.parse(f.content);
-    if(typeof d.initialBalance !== 'number' || !d.entries || typeof d.entries !== 'object'){ throw new Error('云端数据格式不正确'); }
+    if(!d.entries || typeof d.entries !== 'object'){ throw new Error('云端数据格式不正确'); }
     const ver = typeof d.version === 'number' ? d.version : 1;
     const doApply = () => {
       downloadBlob(new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }), '本地备份_' + new Date().toISOString().slice(0, 10) + '.json');
-      state = {
-        initialBalance: d.initialBalance,
-        entries: d.entries,
-        recurring: Array.isArray(d.recurring) ? d.recurring : [],
-        trash: Array.isArray(d.trash) ? d.trash : [],
-        version: ver
-      };
+      state = normalizeState(d);
       save(); render();
       setSyncStatus('✓ 已从云端下载并覆盖本地', true);
     };
@@ -1146,6 +1324,23 @@ function openDay(k){
   });
   $('#eName').value = '';
   $('#eAmt').value = '';
+  // 实际余额区块
+  const av = actualOf(k);
+  const dev = deviationOf(k);
+  $('#actualVal').value = av === null ? '' : av;
+  $('#actualClear').style.display = av === null ? 'none' : '';
+  const abox = $('#actualBox');
+  if(av === null){
+    abox.style.display = 'block';
+    abox.innerHTML = '当天未记录实际余额。填入后可用于对比计划与实际的偏差（可选功能；手头资金直接按普通入账记录即可）。';
+  }else{
+    const plan = plannedFrom(k);
+    const devTxt = (dev >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(dev));
+    abox.style.display = 'block';
+    abox.innerHTML = '实际余额 ' + money(av) + ' · 预计应为 ' + money(plan) + '<br>' +
+      '<span class="dev-line ' + (dev >= 0 ? 'pos' : 'neg') + '">偏差 ' + devTxt + '（' + (dev >= 0 ? '实际比计划多' : '实际比计划少') + '）</span>' +
+      '<div class="dev-hint">偏差 = 当日实际余额 − 按此前基准推算的预计值。此后各天都会以最近一次实际余额为基准计算。</div>';
+  }
   $('#dayModal').classList.add('open');
 }
 function closeDay(){ $('#dayModal').classList.remove('open'); currentK = null; }
@@ -1157,6 +1352,8 @@ function showTip(x, y, k){
   const { tin, tout } = totalsOf(k);
   const net = tin - tout;
   const cum = cumulativeUpTo(k);
+  const aVal = actualOf(k);
+  const dev = deviationOf(k);
   const arr = state.entries[k] || [];
   let items = '';
   if(arr.length){
@@ -1169,6 +1366,7 @@ function showTip(x, y, k){
   }
   $('#tip').innerHTML =
     '<div class="tip-title">' + dateLabel(k) + ' · 累计剩余 <span class="tip-cum' + (cum < 0 ? ' neg' : '') + '">' + money(cum) + '</span></div>' +
+    (dev !== null ? '<div class="tip-actual">🎯 实际 ' + money(aVal) + ' · 偏差 <b class="' + (dev >= 0 ? 'pos' : 'neg') + '">' + (dev >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(dev)) + '</b></div>' : '') +
     items +
     '<div class="tip-foot"><span>当日净额 ' + (net >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(net)) + '</span><span>共 ' + arr.length + ' 项</span></div>';
   $('#tip').style.display = 'block';
@@ -1228,6 +1426,14 @@ function openEdit(k, id){
   $('#editType').value = e.type;
   $('#editName').value = e.name || '';
   $('#editAmt').value = e.amount;
+  const hint = $('#editRecHint');
+  if(e.recId){
+    const rule = (state.recurring || []).find(r => r.id === e.recId);
+    hint.style.display = '';
+    hint.textContent = '🔁 周期账单「' + ((rule && rule.name) || e.name || '') + '」：把日期改到其它天可以做提前 / 延后处理（如期还款），原日期本期不会再自动生成。';
+  }else{
+    hint.style.display = 'none';
+  }
   $('#editMask').classList.add('open');
 }
 function closeEdit(){ $('#editMask').classList.remove('open'); editingRef = null; }
@@ -1250,6 +1456,20 @@ function saveEdit(){
     if(!arr.length) delete state.entries[k];
     state.entries[date] = state.entries[date] || [];
     state.entries[date].push(item);
+    // 周期账单某期改期（如提前还款）：
+    // 1) 原日期本期不再自动生成（加入 skip，老数据无 occ 时用原日期 k 兜底）
+    // 2) 新日期若恰好也是该规则的生成日，同样防重复
+    // 3) occ 更新为新日期，后续删除/恢复的追踪基于新日期
+    if(item.recId){
+      const rule = (state.recurring || []).find(r => r.id === item.recId);
+      if(rule){
+        rule.skip = rule.skip || [];
+        const orig = item.occ || k;
+        if(!rule.skip.includes(orig)) rule.skip.push(orig);
+        if(occurrencesOf(rule, date, date).includes(date) && !rule.skip.includes(date)) rule.skip.push(date);
+      }
+      item.occ = date;
+    }
   }
   save(); closeEdit(); render();
   if($('#dayModal').classList.contains('open') && currentK) openDay(currentK);
@@ -1259,6 +1479,18 @@ $('#editCancel').addEventListener('click', closeEdit);
 $('#editMask').addEventListener('click', e => { if(e.target === e.currentTarget) closeEdit(); });
 $('#editName').addEventListener('keydown', e => { if(e.key === 'Enter') saveEdit(); });
 $('#editAmt').addEventListener('keydown', e => { if(e.key === 'Enter') saveEdit(); });
+
+$('#actualSave').addEventListener('click', () => {
+  if(!currentK) return;
+  const v = parseFloat($('#actualVal').value);
+  if(isNaN(v)){ showAlert('请输入有效的实际余额（可以是 0 或正数）'); return; }
+  saveActual(currentK, v);
+});
+$('#actualClear').addEventListener('click', () => {
+  if(!currentK) return;
+  showConfirm('清除 ' + dateLabel(currentK) + ' 的实际余额记录？', '清除', () => clearActual(currentK));
+});
+$('#actualVal').addEventListener('keydown', e => { if(e.key === 'Enter') $('#actualSave').click(); });
 
 $('#recBtn').addEventListener('click', () => { renderRecList(); resetRecForm(); $('#recMask').classList.add('open'); });
 $('#recCancel').addEventListener('click', closeRec);
@@ -1333,13 +1565,6 @@ $('#addBtn').addEventListener('click', addEntry);
 $('#eName').addEventListener('keydown', e => { if(e.key === 'Enter') addEntry(); });
 $('#eAmt').addEventListener('keydown', e => { if(e.key === 'Enter') addEntry(); });
 
-const initInput = $('#initBal');
-initInput.value = state.initialBalance;
-initInput.addEventListener('change', () => {
-  const v = parseFloat(initInput.value);
-  if(!isNaN(v)){ state.initialBalance = v; save(); render(); }
-});
-
 $('#exportBtn').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -1356,9 +1581,9 @@ $('#importFile').addEventListener('change', e => {
   r.onload = () => {
     try{
       const d = JSON.parse(r.result);
-      if(typeof d.initialBalance !== 'number' || !d.entries || typeof d.entries !== 'object') throw new Error('bad');
+      if(!d.entries || typeof d.entries !== 'object') throw new Error('bad');
       showConfirm('导入将覆盖当前全部数据，确定继续？', '覆盖导入', () => {
-        state = { initialBalance: d.initialBalance, entries: d.entries, recurring: Array.isArray(d.recurring) ? d.recurring : [], trash: Array.isArray(d.trash) ? d.trash : [], version: typeof d.version === 'number' ? d.version : DATA_VERSION };
+        state = normalizeState(d);
         save(); render();
       });
     }catch(err){ showAlert('文件格式不正确，导入失败'); }
