@@ -12,6 +12,7 @@
   --green:#10b981; --green-bg:#d1fae5; --green-deep:#047857;
   --red:#ef4444; --red-bg:#fee2e2; --red-deep:#b91c1c;
   --blue:#2563eb;
+  --orange:#fde047; --orange-bg:#fef08a; --orange-deep:#a16207;
   --panel-bg:#f8fafc; --head-bg:#fafbfe; --blank-bg:#fafbfe; --hover:#f0f7ff;
   --ring:rgba(31,36,48,.28); --wm:rgba(15,23,42,.06); --wm-neg:rgba(185,28,28,.09);
   --input-bg:#ffffff; --circle-neg-bg:rgba(255,255,255,.6); --red-bg-hover:#ffd4d9;
@@ -23,6 +24,7 @@
   --green:#34d399; --green-bg:rgba(16,185,129,.18); --green-deep:#6ee7b7;
   --red:#f87171; --red-bg:rgba(239,68,68,.18); --red-deep:#fca5a5;
   --blue:#60a5fa;
+  --orange:#fde047; --orange-bg:rgba(253,224,71,.22); --orange-deep:#facc15;
   --panel-bg:#283548; --head-bg:#23324a; --blank-bg:#16223a; --hover:#26364e;
   --ring:rgba(226,232,240,.28); --wm:rgba(226,232,240,.07); --wm-neg:rgba(248,113,113,.14);
   --input-bg:#0f172a; --circle-neg-bg:rgba(15,23,42,.45); --red-bg-hover:rgba(239,68,68,.30);
@@ -43,10 +45,12 @@ h1{font-size:22px; display:flex; align-items:center; gap:8px}
 .spacer{flex:1}
 .hint{font-size:12px; color:var(--sub)}
 
-.summary{display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:12px}
+.summary{display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-bottom:12px}
 .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.card.ex-card{border-color:#fde047; background:linear-gradient(180deg,#fef9c3,var(--card))}
 .card .k{font-size:12px; color:var(--sub); margin-bottom:6px}
 .card .v{font-size:19px; font-weight:700}
+.v.ex{color:var(--orange-deep)}
 .v.in{color:var(--green-deep)} .v.out{color:var(--red-deep)}
 .dev-detail{font-size:11px; color:var(--sub); margin-top:4px; line-height:1.5}
 .actual-row{display:flex; align-items:stretch; gap:8px; margin-top:8px; flex-wrap:wrap}
@@ -105,6 +109,7 @@ svg#spark{width:100%; height:190px; display:block}
 .day-actual{font-size:10px; font-weight:700; margin-top:2px}
 .day-actual.in{color:var(--green-deep)}
 .day-actual.out{color:var(--red-deep)}
+.day-actual.ex{color:var(--orange-deep)}
 .foot{font-size:12px; color:var(--sub); margin-top:10px; line-height:1.7}
 
 .table-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-top:12px; box-shadow:0 1px 2px rgba(16,24,40,.04)}
@@ -117,7 +122,10 @@ tbody tr:last-child td{border-bottom:none}
 tbody tr:hover{background:var(--hover)}
 .td-date{white-space:nowrap; color:var(--sub)}
 .td-name{max-width:320px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.td-name.ex{color:var(--orange-deep)}
 .td-amt{font-weight:700; text-align:right}
+.td-amt.ex{color:var(--orange-deep)}
+tr.row-excluded td{background:#fefce8}
 .td-act{text-align:center; width:66px; white-space:nowrap}
 .td-act .del,.act{border:none; background:var(--panel-bg); color:var(--sub); width:22px; height:22px; border-radius:6px; cursor:pointer; font-size:11px}
 .td-act .del:hover{background:#fee2e2; color:var(--red-deep)}
@@ -144,8 +152,11 @@ tfoot .in{color:var(--green-deep)} tfoot .out{color:var(--red-deep)}
 #tip .tip-actual b.pos{color:var(--green-deep)}
 #tip .tip-actual b.neg{color:var(--red-deep)}
 #tip .tip-item{display:flex; gap:7px; align-items:center; padding:1px 0}
-#tip .ti-name{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+#tip .ti-name{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+#tip .ti-name.ex{color:var(--orange-deep)}
 #tip .ti-amt{font-weight:700; flex:none}
+#tip .ti-amt.ex{color:var(--orange-deep)}
+#tip .tip-excl{color:var(--orange-deep); font-size:11px}
 #tip .ti-amt.in{color:var(--green-deep)}
 #tip .ti-amt.out{color:var(--red-deep)}
 #tip .tip-more{color:var(--sub); text-align:center; padding:2px 0}
@@ -177,6 +188,8 @@ body{transition:background .2s, color .2s}
 .edit-fields input[type="date"]::-webkit-calendar-picker-indicator{position:absolute; right:6px; top:50%; transform:translateY(-50%); width:26px; height:26px; padding:5px; border-radius:7px; cursor:pointer; opacity:.75; background-color:transparent; transition:background-color .15s, opacity .15s}
 .edit-fields input[type="date"]::-webkit-calendar-picker-indicator:hover{background-color:var(--hover); opacity:1}
 .edit-fields input[type="number"]{font-variant-numeric:tabular-nums}
+.ex-edit-label{flex-direction:row !important; align-items:center; gap:8px; font-size:13px !important; color:var(--sub) !important; font-weight:400 !important; cursor:pointer; user-select:none; margin-top:2px}
+.ex-edit-label input{width:16px !important; height:16px !important; accent-color:var(--orange); cursor:pointer; margin:0}
 #editSave{background:var(--blue); color:#fff; border-color:var(--blue); font-weight:600}
 #editSave:hover{filter:brightness(1.1)}
 #recSave{background:var(--blue); color:#fff; border-color:var(--blue); font-weight:600}
@@ -196,36 +209,51 @@ body{transition:background .2s, color .2s}
 .sync-status.ok{color:var(--green-deep)}
 .sync-status.err{color:var(--red-deep)}
 #syncMask .box-btns{flex-wrap:wrap}
-.modal{background:var(--card); border-radius:14px; width:min(560px,96vw); max-height:92vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,.25); overflow:hidden}
-.modal-head{padding:14px 18px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; flex:none}
-.modal-head h2{font-size:17px}
-.modal-head .x{border:none; background:var(--panel-bg); width:28px; height:28px; border-radius:8px; cursor:pointer; font-size:13px; color:var(--sub)}
+.modal{background:var(--card); border-radius:16px; width:min(880px,96vw); max-height:94vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,.25); overflow:hidden}
+.modal-head{padding:16px 24px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; flex:none}
+.modal-head h2{font-size:19px}
+.modal-head .x{border:none; background:var(--panel-bg); width:32px; height:32px; border-radius:9px; cursor:pointer; font-size:14px; color:var(--sub)}
 .modal-head .x:hover{background:#fee2e2; color:var(--red-deep)}
-.modal-stats{display:flex; flex-wrap:wrap; gap:8px; padding:12px 18px 0; flex:none}
-.stat{background:var(--panel-bg); border:1px solid var(--line); border-radius:10px; padding:8px 10px; min-width:92px; flex:1}
-.stat .k{font-size:11px; color:var(--sub); margin-bottom:4px}
-.stat-v{font-weight:700; font-size:15px}
+.modal-stats{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; padding:14px 24px 0; flex:none}
+.stat{background:var(--panel-bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; min-width:0}
+.stat .k{font-size:12px; color:var(--sub); margin-bottom:5px}
+.stat-v{font-weight:700; font-size:16px}
 .stat-v.in{color:var(--green-deep)} .stat-v.out{color:var(--red-deep)}
-.stat-v.big{font-size:18px}
-.warn-box{display:flex; align-items:center; gap:8px; background:var(--red-bg); color:var(--red-deep); border:1px solid #fecaca; border-radius:10px; padding:10px 12px; margin:12px 18px 0; font-size:13px; font-weight:600; flex:none}
-.modal-body{padding:14px 18px 18px; overflow-y:auto}
-.sec-label{font-size:13px; font-weight:700; color:var(--sub); margin:12px 0 8px}
-#entryList .empty{color:var(--sub); font-size:13px; text-align:center; padding:18px 0; border:1px dashed var(--line); border-radius:10px}
-.entry-row{display:flex; align-items:center; gap:10px; padding:8px 10px; border:1px solid var(--line); border-radius:10px; margin-bottom:8px; background:var(--card)}
+.stat-v.big{font-size:20px}
+.warn-box{display:flex; align-items:center; gap:8px; background:var(--red-bg); color:var(--red-deep); border:1px solid #fecaca; border-radius:10px; padding:11px 14px; margin:14px 24px 0; font-size:13px; font-weight:600; flex:none}
+.modal-body{padding:16px 24px 24px; overflow-y:auto}
+.sec-label{font-size:13px; font-weight:700; color:var(--sub); margin:16px 0 9px}
+#entryList .empty{color:var(--sub); font-size:13px; text-align:center; padding:20px 0; border:1px dashed var(--line); border-radius:10px}
+.entry-row{display:flex; align-items:center; gap:12px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; margin-bottom:8px; background:var(--card)}
+.entry-row.excluded{border-color:#fde047; background:#fefce8}
 .chip{font-size:11px; padding:2px 8px; border-radius:999px; font-weight:600; flex:none}
 .c-in{background:var(--green-bg); color:var(--green-deep)}
 .c-out{background:var(--red-bg); color:var(--red-deep)}
-.e-name{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:14px}
-.e-amt{font-weight:700; flex:none}
+.c-ex{background:#fef08a; color:#7c5307; border:1px solid #fde047}
+[data-theme="dark"] .c-ex{background:rgba(253,224,71,.24); color:#fef08a; border-color:rgba(253,224,71,.55)}
+[data-theme="dark"] .e-name.ex,[data-theme="dark"] .e-amt.ex,[data-theme="dark"] .ex-check.checked{color:#fde047}
+[data-theme="dark"] .entry-row.excluded{border-color:rgba(253,224,71,.55); background:rgba(253,224,71,.10)}
+[data-theme="dark"] tr.row-excluded td{background:rgba(253,224,71,.10)}
+[data-theme="dark"] .card.ex-card{border-color:rgba(253,224,71,.55); background:linear-gradient(180deg,rgba(253,224,71,.12),var(--card))}
+.e-name{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:15px}
+.e-name.ex{color:#a16207; font-weight:600}
+.e-amt{font-weight:700; flex:none; font-size:15px; min-width:96px; text-align:right}
 .e-amt.in{color:var(--green-deep)} .e-amt.out{color:var(--red-deep)}
+.e-amt.ex{color:#a16207}
+.ex-check{flex:none; display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--sub); cursor:pointer; user-select:none; white-space:nowrap}
+.ex-check input{width:15px; height:15px; accent-color:#eab308; cursor:pointer; margin:0}
+.ex-check.checked{color:#a16207; font-weight:600}
+.add-form .add-ex{display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--sub); padding:0 4px; cursor:pointer; user-select:none; white-space:nowrap}
+.add-form .add-ex input{width:16px; height:16px; accent-color:#eab308; cursor:pointer; margin:0}
 .del{border:none; background:var(--panel-bg); color:var(--sub); width:24px; height:24px; border-radius:6px; cursor:pointer; flex:none; font-size:12px}
 .del:hover{background:#fee2e2; color:var(--red-deep)}
-.add-form{display:flex; gap:8px; flex-wrap:wrap}
-.add-form select,.add-form input{padding:8px 10px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-family:inherit; background:var(--input-bg); color:var(--ink)}
-.add-form select:focus,.add-form input:focus{outline:none; border-color:var(--blue)}
-.add-form input[type=text]{flex:1; min-width:130px}
-.add-form input[type=number]{width:110px}
-#addBtn{background:var(--blue); color:#fff; border:none; padding:8px 18px; border-radius:8px; cursor:pointer; font-weight:600; font-size:14px; font-family:inherit}
+.add-form{display:flex; gap:10px; flex-wrap:wrap}
+.add-form select,.add-form input{padding:10px 12px; border:1px solid var(--line); border-radius:9px; font-size:14px; font-family:inherit; background:var(--input-bg); color:var(--ink); height:40px}
+.add-form select:focus,.add-form input:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.add-form input[type=text]{flex:1 1 200px; min-width:150px}
+.add-form input[type=number]{flex:0 1 140px; width:140px}
+.add-form select{flex:0 0 110px}
+#addBtn{background:var(--blue); color:#fff; border:none; padding:0 22px; height:40px; border-radius:9px; cursor:pointer; font-weight:600; font-size:14px; font-family:inherit; flex:none}
 #addBtn:hover{filter:brightness(1.1)}
 
 @media (max-width:760px){
@@ -234,6 +262,13 @@ body{transition:background .2s, color .2s}
   .day-cum{font-size:11px}
   .day-num{width:26px; height:26px; font-size:16px}
   .wm{font-size:34px}
+  .modal{width:98vw; max-height:96vh}
+  .modal-stats{grid-template-columns:repeat(2,1fr); padding:12px 14px 0}
+  .modal-head{padding:14px 16px}
+  .modal-body{padding:14px 14px 18px}
+  .warn-box{margin:12px 14px 0}
+  .e-amt{min-width:auto}
+  .add-form input[type=text]{flex:1 1 100%}
 }
 </style>
 </head>
@@ -265,6 +300,7 @@ body{transition:background .2s, color .2s}
     <div class="card"><div class="k">本月预计花费</div><div class="v out" id="sumOut">¥0</div></div>
     <div class="card"><div class="k">本月预计净额</div><div class="v" id="sumNet">¥0</div></div>
     <div class="card"><div class="k">月末预计剩余</div><div class="v" id="sumEnd">¥0</div></div>
+    <div class="card ex-card"><div class="k">本月未计入收支</div><div class="v ex" id="sumEx">¥0</div><div class="dev-detail" id="sumExDetail">暂不计入的项目合计</div></div>
     <div class="card"><div class="k">最近实际余额偏差</div><div class="v" id="sumDev">—</div><div class="dev-detail" id="sumDevDetail"></div></div>
   </div>
 
@@ -305,7 +341,7 @@ body{transition:background .2s, color .2s}
     <div class="table-scroll">
       <table>
         <thead>
-          <tr><th>日期</th><th>类型</th><th>项目名称</th><th style="text-align:right">金额</th><th style="text-align:center">操作</th></tr>
+          <tr><th>日期</th><th>类型</th><th>金额</th><th>项目名称</th><th style="text-align:center">操作</th></tr>
         </thead>
         <tbody id="itemTableBody"></tbody>
         <tfoot id="itemTableFoot"></tfoot>
@@ -314,7 +350,7 @@ body{transition:background .2s, color .2s}
   </div>
 
   <div class="foot">
-    💡 使用说明：① 点击任意日期，像普通账目一样填入你的入账 / 花费项目（手头的本金就直接记一笔「入账」即可，程序只做累加，不再有内置的期初余额）；② 鼠标悬停日期可快速预览当天项目与累计剩余；④ 每天的格子会显示：入账(+绿) / 花费(-红) / 当日净额 / 累计剩余；⑤ 当累计剩余为负时，当天背景整格标红并显示 ⚠；⑥ 「导出 / 导入」可备份数据到 JSON 文件；⑦ 点击任意日期打开详情，用 ✏️ 可编辑项目并调整日期；⑧ 🎯 可选：在日期详情里记录「当天实际账户余额」，用于对比计划与实际的偏差（日历格显示「实+/-」，走势图叠加蓝色实际点，顶部卡片显示最近偏差）；⑨ 🔁 周期账单某期如需提前 / 延后（如提前还款），在详情里用 ✏️ 把该笔改到实际扣款的日期即可，原日期本期不再重复生成。
+    💡 使用说明：① 点击任意日期，像普通账目一样填入你的入账 / 花费项目（手头的本金就直接记一笔「入账」即可，程序只做累加，不再有内置的期初余额）；② 鼠标悬停日期可快速预览当天项目与累计剩余；④ 每天的格子会显示：入账(+绿) / 花费(-红) / 当日净额 / 累计剩余；⑤ 当累计剩余为负时，当天背景整格标红并显示 ⚠；⑥ 「导出 / 导入」可备份数据到 JSON 文件；⑦ 点击任意日期打开详情，用 ✏️ 可编辑项目并调整日期；⑧ 🎯 可选：在日期详情里记录「当天实际账户余额」，用于对比计划与实际的偏差（日历格显示「实+/-」，走势图叠加蓝色实际点，顶部卡片显示最近偏差）；⑨ 🔁 周期账单某期如需提前 / 延后（如提前还款），在详情里用 ✏️ 把该笔改到实际扣款的日期即可，原日期本期不再重复生成；⑩ 🟠 有些费用可能最终不会发生：新增项目时勾选「暂不计入收支」（或事后勾选项目后的「不计入」勾选框），该项目显示为橙色、不影响余额计算，顶部卡片和底部合计会单独列出未计入的笔数与金额。
   </div>
 </div>
 
@@ -351,8 +387,9 @@ body{transition:background .2s, color .2s}
           <option value="in">入账</option>
           <option value="out">花费</option>
         </select>
-        <input type="text" id="eName" placeholder="项目名称，如：工资 / 房租" maxlength="40" />
         <input type="number" id="eAmt" placeholder="金额" min="0" step="0.01" />
+        <input type="text" id="eName" placeholder="项目名称，如：工资 / 房租" maxlength="40" />
+        <label class="add-ex"><input type="checkbox" id="eExclude" />暂不计入收支</label>
         <button id="addBtn">添加</button>
       </div>
     </div>
@@ -384,6 +421,7 @@ body{transition:background .2s, color .2s}
       </label>
       <label class="full">项目名称 <input type="text" id="editName" maxlength="40" placeholder="如：工资 / 房租" /></label>
       <label>金额 <input type="number" id="editAmt" min="0" step="0.01" placeholder="0.00" /></label>
+      <label class="full ex-edit-label"><input type="checkbox" id="editExcluded" /> 暂不计入收支（显示为橙色，不影响余额计算）</label>
     </div>
     <div class="rec-hint-box" id="editRecHint" style="display:none"></div>
     <div class="box-btns">
@@ -515,10 +553,14 @@ function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&l
 const fmt = n => Number(n).toLocaleString('zh-CN', { maximumFractionDigits: 2 });
 const money = n => (n < 0 ? '-¥' : '¥') + fmt(Math.abs(n));
 
+/* 统计当日入账 / 花费：excluded 的项目（暂不计入收支）不参与计算，单独汇总返回 */
 function totalsOf(k){
-  let tin = 0, tout = 0;
-  (state.entries[k] || []).forEach(e => { if(e.type === 'in') tin += e.amount; else tout += e.amount; });
-  return { tin, tout };
+  let tin = 0, tout = 0, exIn = 0, exOut = 0, exCount = 0;
+  (state.entries[k] || []).forEach(e => {
+    if(e.excluded){ exCount++; if(e.type === 'in') exIn += e.amount; else exOut += e.amount; return; }
+    if(e.type === 'in') tin += e.amount; else tout += e.amount;
+  });
+  return { tin, tout, exIn, exOut, exCount };
 }
 function netOf(k){ const t = totalsOf(k); return t.tin - t.tout; }
 /* ---- 实际余额与偏差 ---- */
@@ -705,9 +747,26 @@ function render(){
   const { days, offset, maxA } = buildMonth(view.y, view.m);
   $('#monthLabel').textContent = view.y + '年' + (view.m + 1) + '月';
 
-  let tin = 0, tout = 0;
+  let tin = 0, tout = 0, exIn = 0, exOut = 0, exCount = 0;
   days.forEach(d => { tin += d.kin; tout += d.kout; });
   const lastCum = days.length ? days[days.length - 1].cum : 0;
+  // 本月未计入收支统计
+  days.forEach(d => {
+    (state.entries[d.k] || []).forEach(e => {
+      if(!e.excluded) return;
+      exCount++;
+      if(e.type === 'in') exIn += e.amount; else exOut += e.amount;
+    });
+  });
+  const exNet = exIn - exOut;
+  const exEl = $('#sumEx'), exDetail = $('#sumExDetail');
+  if(exCount){
+    exEl.textContent = (exNet >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(exNet));
+    exDetail.textContent = '共 ' + exCount + ' 笔未计入（入账 ' + money(exIn) + ' · 花费 ' + money(exOut) + '）';
+  }else{
+    exEl.textContent = '¥0';
+    exDetail.textContent = '本月没有暂不计入的项目';
+  }
   $('#sumIn').textContent = '+¥' + fmt(tin);
   $('#sumOut').textContent = '-¥' + fmt(tout);
   const netEl = $('#sumNet');
@@ -771,12 +830,14 @@ function render(){
     const netTxt = d.net === 0 ? '净 ¥0' : (d.net > 0 ? '净 +¥' : '净 -¥') + fmt(Math.abs(d.net));
     const dev = deviationOf(d.k);
     const devTxt = dev === null ? '' : '<div class="day-actual ' + (dev >= 0 ? 'in' : 'out') + '">实' + (dev >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(dev)) + '</div>';
+    const exT = totalsOf(d.k);
+    const exBadge = exT.exCount ? '<div class="day-actual ex">不计入 ' + exT.exCount + '笔 ¥' + fmt(exT.exIn + exT.exOut) + '</div>' : '';
     cell.innerHTML =
       '<span class="wm">' + d.d + '</span>' +
-      '<div class="day-top"><span class="day-num' + (dow === 0 || dow === 6 ? ' weekend' : '') + '">' + d.d + '</span>' + (d.cum < 0 ? '<span class="neg-flag">⚠</span>' : '') + (dev !== null ? '<span class="neg-flag" style="color:var(--blue)">🎯</span>' : '') + '</div>' +
+      '<div class="day-top"><span class="day-num' + (dow === 0 || dow === 6 ? ' weekend' : '') + '">' + d.d + '</span>' + (d.cum < 0 ? '<span class="neg-flag">⚠</span>' : '') + (dev !== null ? '<span class="neg-flag" style="color:var(--blue)">🎯</span>' : '') + (exT.exCount ? '<span class="neg-flag" style="color:var(--orange-deep)">●</span>' : '') + '</div>' +
       bars + totals +
       '<div class="day-net">' + netTxt + '</div>' +
-      '<div class="day-cum">' + money(d.cum) + '</div>' + devTxt;
+      '<div class="day-cum">' + money(d.cum) + '</div>' + devTxt + exBadge;
     cell.addEventListener('click', () => openDay(d.k));
     body.appendChild(cell);
   });
@@ -819,25 +880,32 @@ function renderItemsTable(){
     const any = Object.keys(state.entries).length > 0;
     tbody.innerHTML = '<tr><td colspan="5" class="empty">' + (any ? '没有符合筛选条件的项目' : '还没有任何项目，点击日历中的日期添加吧～') + '</td></tr>';
   }
-  let tin = 0, tout = 0;
+  let tin = 0, tout = 0, exIn = 0, exOut = 0, exCount = 0;
   rows.forEach(r => {
     const tr = document.createElement('tr');
+    if(r.excluded) tr.className = 'row-excluded';
     tr.innerHTML =
       '<td class="td-date">' + dateLabel(r.k) + '</td>' +
-      '<td><span class="chip ' + (r.type === 'in' ? 'c-in' : 'c-out') + '">' + (r.type === 'in' ? '入账' : '花费') + '</span></td>' +
-      '<td class="td-name">' + (r.recId ? '🔁 ' : '') + esc(r.name || '(未命名)') + '</td>' +
-      '<td class="td-amt ' + (r.type === 'in' ? 'in' : 'out') + '">' + (r.type === 'in' ? '+' : '-') + '¥' + fmt(r.amount) + '</td>' +
+      '<td><span class="chip ' + (r.excluded ? 'c-ex' : (r.type === 'in' ? 'c-in' : 'c-out')) + '">' + (r.excluded ? '不计入' : (r.type === 'in' ? '入账' : '花费')) + '</span></td>' +
+      '<td class="td-amt ' + (r.excluded ? 'ex' : (r.type === 'in' ? 'in' : 'out')) + '" style="text-align:left">' + (r.excluded ? '' : (r.type === 'in' ? '+' : '-')) + '¥' + fmt(r.amount) + '</td>' +
+      '<td class="td-name' + (r.excluded ? ' ex' : '') + '">' + (r.recId ? '🔁 ' : '') + esc(r.name || '(未命名)') + '</td>' +
       '<td class="td-act"><button class="act" title="编辑">✏️</button><button class="del" title="删除">✕</button></td>';
     tr.querySelector('.act').addEventListener('click', () => openEdit(r.k, r.id));
     tr.querySelector('.del').addEventListener('click', () => deleteEntryItem(r.k, r.id));
     tbody.appendChild(tr);
-    if(r.type === 'in') tin += r.amount; else tout += r.amount;
+    if(r.excluded){
+      exCount++;
+      if(r.type === 'in') exIn += r.amount; else exOut += r.amount;
+    }else if(r.type === 'in') tin += r.amount; else tout += r.amount;
   });
   const net = tin - tout;
-  $('#itemTableFoot').innerHTML =
+  const exNet = exIn - exOut;
+  let footHtml =
     '<tr><td colspan="3" class="td-total-label">合计（' + rows.length + ' 笔）</td>' +
-    '<td class="td-amt">入账 <span class="in">+¥' + fmt(tin) + '</span> · 花费 <span class="out">-¥' + fmt(tout) + '</span><br>净额 <span class="' + (net >= 0 ? 'in' : 'out') + '">' + (net >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(net)) + '</span></td>' +
-    '<td></td></tr>';
+    '<td class="td-amt" style="text-align:left">入账 <span class="in">+¥' + fmt(tin) + '</span> · 花费 <span class="out">-¥' + fmt(tout) + '</span><br>净额 <span class="' + (net >= 0 ? 'in' : 'out') + '">' + (net >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(net)) + '</span>' +
+    (exCount ? '<br><span class="ex">未计入收支 ' + exCount + ' 笔：' + (exNet >= 0 ? '+' : '-') + '¥' + fmt(Math.abs(exNet)) + '</span>' : '') +
+    '</td><td></td></tr>';
+  $('#itemTableFoot').innerHTML = footHtml;
 }
 
 /* ---- 周期账单自动生成 ---- */
@@ -1311,13 +1379,20 @@ function openDay(k){
   if(!arr.length) list.innerHTML = '<div class="empty">当天还没有项目，先添加一笔吧～</div>';
   arr.forEach(e => {
     const row = document.createElement('div');
-    row.className = 'entry-row';
+    row.className = 'entry-row' + (e.excluded ? ' excluded' : '');
     row.innerHTML =
-      '<span class="chip ' + (e.type === 'in' ? 'c-in' : 'c-out') + '">' + (e.type === 'in' ? '入账' : '花费') + '</span>' +
-      '<span class="e-name">' + (e.recId ? '🔁 ' : '') + esc(e.name || '(未命名)') + '</span>' +
-      '<span class="e-amt ' + (e.type === 'in' ? 'in' : 'out') + '">' + (e.type === 'in' ? '+' : '-') + '¥' + fmt(e.amount) + '</span>' +
+      '<span class="chip ' + (e.excluded ? 'c-ex' : (e.type === 'in' ? 'c-in' : 'c-out')) + '">' + (e.excluded ? '不计入' : (e.type === 'in' ? '入账' : '花费')) + '</span>' +
+      '<span class="e-amt ' + (e.excluded ? 'ex' : (e.type === 'in' ? 'in' : 'out')) + '">' + (e.excluded ? '' : (e.type === 'in' ? '+' : '-')) + '¥' + fmt(e.amount) + '</span>' +
+      '<span class="e-name' + (e.excluded ? ' ex' : '') + '">' + (e.recId ? '🔁 ' : '') + esc(e.name || '(未命名)') + '</span>' +
+      '<label class="ex-check' + (e.excluded ? ' checked' : '') + '" title="勾选后本项目暂不计入收支（金额不计入统计，显示为橙色）"><input type="checkbox" data-id="' + e.id + '"' + (e.excluded ? ' checked' : '') + ' />不计入</label>' +
       '<button class="act" title="编辑（含调整日期）">✏️</button>' +
       '<button class="del" title="删除">✕</button>';
+    row.querySelector('.ex-check input').addEventListener('change', ev => {
+      e.excluded = ev.target.checked || undefined;
+      if(!e.excluded) delete e.excluded;
+      save(); render();
+      openDay(k);
+    });
     row.querySelector('.act').addEventListener('click', () => openEdit(k, e.id));
     row.querySelector('.del').addEventListener('click', () => deleteEntryItem(k, e.id));
     list.appendChild(row);
@@ -1358,9 +1433,11 @@ function showTip(x, y, k){
   let items = '';
   if(arr.length){
     arr.slice(0, 8).forEach(e => {
-      items += '<div class="tip-item"><span class="chip ' + (e.type === 'in' ? 'c-in' : 'c-out') + '">' + (e.type === 'in' ? '入账' : '花费') + '</span><span class="ti-name">' + (e.recId ? '🔁 ' : '') + esc(e.name || '(未命名)') + '</span><span class="ti-amt ' + (e.type === 'in' ? 'in' : 'out') + '">' + (e.type === 'in' ? '+' : '-') + '¥' + fmt(e.amount) + '</span></div>';
+      items += '<div class="tip-item"><span class="chip ' + (e.excluded ? 'c-ex' : (e.type === 'in' ? 'c-in' : 'c-out')) + '">' + (e.excluded ? '不计入' : (e.type === 'in' ? '入账' : '花费')) + '</span><span class="ti-amt ' + (e.excluded ? 'ex' : (e.type === 'in' ? 'in' : 'out')) + '">' + (e.excluded ? '' : (e.type === 'in' ? '+' : '-')) + '¥' + fmt(e.amount) + '</span><span class="ti-name' + (e.excluded ? ' ex' : '') + '">' + (e.recId ? '🔁 ' : '') + esc(e.name || '(未命名)') + '</span></div>';
     });
     if(arr.length > 8) items += '<div class="tip-more">… 还有 ' + (arr.length - 8) + ' 项</div>';
+    const t = totalsOf(k);
+    if(t.exCount) items += '<div class="tip-excl">未计入收支：' + t.exCount + ' 笔（' + money(((t.exIn - t.exOut) >= 0 ? 1 : -1) * Math.abs(t.exIn - t.exOut)) + '）</div>';
   }else{
     items = '<div class="tip-empty">当天暂无项目</div>';
   }
@@ -1426,6 +1503,7 @@ function openEdit(k, id){
   $('#editType').value = e.type;
   $('#editName').value = e.name || '';
   $('#editAmt').value = e.amount;
+  $('#editExcluded').checked = !!e.excluded;
   const hint = $('#editRecHint');
   if(e.recId){
     const rule = (state.recurring || []).find(r => r.id === e.recId);
@@ -1451,6 +1529,7 @@ function saveEdit(){
   if(idx === -1){ closeEdit(); return; }
   const item = arr[idx];
   item.type = type; item.name = name; item.amount = amt;
+  if($('#editExcluded').checked) item.excluded = true; else delete item.excluded;
   if(date !== k){
     arr.splice(idx, 1);
     if(!arr.length) delete state.entries[k];
@@ -1523,8 +1602,11 @@ function addEntry(){
   const name = $('#eName').value.trim();
   const amt = parseFloat($('#eAmt').value);
   if(!(amt > 0)){ showAlert('请输入有效的金额（必须大于 0）'); return; }
+  const excluded = $('#eExclude').checked;
   state.entries[k] = state.entries[k] || [];
-  state.entries[k].push({ id: Date.now() + Math.floor(Math.random() * 1000), type, name, amount: amt, ts: Date.now() });
+  const item = { id: Date.now() + Math.floor(Math.random() * 1000), type, name, amount: amt, ts: Date.now() };
+  if(excluded) item.excluded = true;
+  state.entries[k].push(item);
   save(); render(); openDay(k);
 }
 
