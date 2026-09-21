@@ -208,6 +208,17 @@ body{transition:background .2s, color .2s}
 .sync-status{margin-top:10px; font-size:13px; font-weight:600; min-height:18px}
 .sync-status.ok{color:var(--green-deep)}
 .sync-status.err{color:var(--red-deep)}
+.auto-box{display:flex; align-items:center; gap:16px; margin:0 0 10px; padding:10px 12px; background:var(--panel-bg); border:1px solid var(--line); border-radius:10px; font-size:13px; flex-wrap:wrap}
+.auto-check{display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; font-weight:600}
+.auto-check input{width:16px; height:16px; accent-color:var(--blue); cursor:pointer; margin:0}
+.auto-int{display:inline-flex; align-items:center; gap:7px; color:var(--sub)}
+.auto-int select{padding:5px 8px; border:1px solid var(--line); border-radius:7px; font-size:13px; background:var(--input-bg); color:var(--ink); font-family:inherit}
+.auto-hint{font-size:11.5px; color:var(--sub); line-height:1.7; margin-bottom:12px}
+.auto-hint strong{color:var(--ink)}
+#syncBtn{position:relative}
+#syncBtn.dot-ok::after,#syncBtn.dot-warn::after{content:''; position:absolute; top:-3px; right:-3px; width:9px; height:9px; border-radius:50%; border:1.5px solid var(--bg)}
+#syncBtn.dot-ok::after{background:var(--green)}
+#syncBtn.dot-warn::after{background:var(--red)}
 #syncMask .box-btns{flex-wrap:wrap}
 .modal{background:var(--card); border-radius:16px; width:min(880px,96vw); max-height:94vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,.25); overflow:hidden}
 .modal-head{padding:16px 24px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; flex:none}
@@ -350,7 +361,7 @@ body{transition:background .2s, color .2s}
   </div>
 
   <div class="foot">
-    💡 使用说明：① 点击任意日期，像普通账目一样填入你的入账 / 花费项目（手头的本金就直接记一笔「入账」即可，程序只做累加，不再有内置的期初余额）；② 鼠标悬停日期可快速预览当天项目与累计剩余；④ 每天的格子会显示：入账(+绿) / 花费(-红) / 当日净额 / 累计剩余；⑤ 当累计剩余为负时，当天背景整格标红并显示 ⚠；⑥ 「导出 / 导入」可备份数据到 JSON 文件；⑦ 点击任意日期打开详情，用 ✏️ 可编辑项目并调整日期；⑧ 🎯 可选：在日期详情里记录「当天实际账户余额」，用于对比计划与实际的偏差（日历格显示「实+/-」，走势图叠加蓝色实际点，顶部卡片显示最近偏差）；⑨ 🔁 周期账单某期如需提前 / 延后（如提前还款），在详情里用 ✏️ 把该笔改到实际扣款的日期即可，原日期本期不再重复生成；⑩ 🟠 有些费用可能最终不会发生：新增项目时勾选「暂不计入收支」（或事后勾选项目后的「不计入」勾选框），该项目显示为橙色、不影响余额计算，顶部卡片和底部合计会单独列出未计入的笔数与金额。
+    💡 使用说明：① 点击任意日期，像普通账目一样填入你的入账 / 花费项目（手头的本金就直接记一笔「入账」即可，程序只做累加，不再有内置的期初余额）；② 鼠标悬停日期可快速预览当天项目与累计剩余；④ 每天的格子会显示：入账(+绿) / 花费(-红) / 当日净额 / 累计剩余；⑤ 当累计剩余为负时，当天背景整格标红并显示 ⚠；⑥ 「导出 / 导入」可备份数据到 JSON 文件；⑦ 点击任意日期打开详情，用 ✏️ 可编辑项目并调整日期；⑧ 🎯 可选：在日期详情里记录「当天实际账户余额」，用于对比计划与实际的偏差（日历格显示「实+/-」，走势图叠加蓝色实际点，顶部卡片显示最近偏差）；⑨ 🔁 周期账单某期如需提前 / 延后（如提前还款），在详情里用 ✏️ 把该笔改到实际扣款的日期即可，原日期本期不再重复生成；⑩ 🟠 有些费用可能最终不会发生：新增项目时勾选「暂不计入收支」（或事后勾选项目后的「不计入」勾选框），该项目显示为橙色、不影响余额计算，顶部卡片和底部合计会单独列出未计入的笔数与金额；⑪ ☁️ 云同步：点右上角 ☁️ 输入你的 GitHub Token（页面不携带任何密钥，Token 仅缓存在本机浏览器），勾选「自动同步」后每次打开页面都会定时上传 / 拉取，换设备用同一 Token 即可继续。
   </div>
 </div>
 
@@ -489,6 +500,19 @@ body{transition:background .2s, color .2s}
       <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener" class="sync-link">创建 Token（勾选 gist 权限）→</a>
     </div>
     <div class="sync-tip">🔒 数据存到你的 <strong>Secret Gist</strong>（秘密片段）：不公开、搜索不到，首次上传自动创建，之后自动找到并更新。<span class="sync-warn">注意：知道链接的人可以查看，GitHub 也不把 Gist 视为敏感数据的安全场所——仅适合你说的情况。</span>Token 只保存在本机浏览器，<strong>不会写进数据文件</strong>；下载覆盖本地前会自动导出备份。</div>
+    <div class="auto-box">
+      <label class="auto-check"><input type="checkbox" id="syncAuto" /><span>自动同步</span></label>
+      <label class="auto-int">间隔
+        <select id="syncInterval">
+          <option value="1">1 分钟</option>
+          <option value="5" selected>5 分钟</option>
+          <option value="15">15 分钟</option>
+          <option value="30">30 分钟</option>
+          <option value="60">1 小时</option>
+        </select>
+      </label>
+    </div>
+    <div class="auto-hint">开启后：每次打开页面都会用缓存的 Token 自动定时上传 / 拉取。页面本身<strong>不携带任何密钥</strong>，别人首次访问需自行输入自己的 Token，仅缓存在他自己的浏览器。本地和云端都有新改动时不会自动覆盖，会暂停并提示手动处理。</div>
     <div class="box-btns">
       <button id="syncUp">⬆️ 上传到云端</button>
       <button id="syncDown">⬇️ 从云端下载</button>
@@ -1105,11 +1129,16 @@ let syncCfg = (() => {
     const r = localStorage.getItem('cashflow-planner-sync');
     if(r){
       const d = JSON.parse(r);
-      return { token: d.token || '', file: d.file || 'cashflow-data.json' };
+      return {
+        token: d.token || '', file: d.file || 'cashflow-data.json', gistId: d.gistId || '',
+        auto: !!d.auto, intervalMin: d.intervalMin || 5,
+        lastHash: d.lastHash || '', lastRemoteUpdated: d.lastRemoteUpdated || '', lastSyncAt: d.lastSyncAt || 0
+      };
     }
   }catch(e){}
-  return { token: '', file: 'cashflow-data.json' };
+  return { token: '', file: 'cashflow-data.json', gistId: '', auto: false, intervalMin: 5, lastHash: '', lastRemoteUpdated: '', lastSyncAt: 0 };
 })();
+let autoTimer = null, autoBusy = false, autoConflict = false;
 function saveSyncCfg(){ localStorage.setItem('cashflow-planner-sync', JSON.stringify(syncCfg)); }
 function readSyncInputs(){
   syncCfg.token = $('#syncToken').value.trim();
@@ -1144,38 +1173,192 @@ async function ghErrMsg(res, fallback){
   return msg;
 }
 async function findGist(cfg){
-  // 在用户名下的 Gist 列表里找包含指定文件名的那个（列表默认最新在前）
+  // 优先用记住的 gistId 直连（Gist 列表接口有传播延迟，刚创建的条目可能查不到，会导致重复创建）；
+  // 没有记录或已失效时，才在用户名下的 Gist 列表里找包含指定文件名的那个（列表默认最新在前）
+  if(cfg.gistId){
+    const res = await fetch('https://api.github.com/gists/' + cfg.gistId, { headers: syncAuthHeaders(cfg.token), cache: 'no-store' });
+    if(res.status === 200){
+      const j = await res.json();
+      if(j.files && j.files[cfg.file]) return j;
+    }
+    cfg.gistId = '';
+    saveSyncCfg();
+  }
   let page = 1;
   while(true){
-    const res = await fetch('https://api.github.com/gists?per_page=100&page=' + page, { headers: syncAuthHeaders(cfg.token) });
+    const res = await fetch('https://api.github.com/gists?per_page=100&page=' + page, { headers: syncAuthHeaders(cfg.token), cache: 'no-store' });
     if(res.status !== 200) throw new Error(await ghErrMsg(res, '查询 Gist 列表失败'));
     const list = await res.json();
-    for(const g of list){ if(g.files && g.files[cfg.file]) return g; }
+    for(const g of list){ if(g.files && g.files[cfg.file]){ cfg.gistId = g.id; saveSyncCfg(); return g; } }
     if(list.length < 100) break;
     page++;
   }
   return null;
 }
+function hashStr(s){
+  let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for(let i = 0; i < s.length; i++){
+    const c = s.charCodeAt(i);
+    h1 = Math.imul(h1 ^ c, 2654435761);
+    h2 = Math.imul(h2 ^ c, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (h2 >>> 0).toString(16).padStart(8, '0') + (h1 >>> 0).toString(16).padStart(8, '0');
+}
+function stateHash(){ return hashStr(JSON.stringify(state, null, 2)); }
+function setDot(kind){
+  const b = $('#syncBtn');
+  b.classList.remove('dot-ok', 'dot-warn');
+  if(kind === 'ok') b.classList.add('dot-ok');
+  else if(kind === 'warn') b.classList.add('dot-warn');
+}
+async function gistPush(cfg, gist, content){
+  let res;
+  if(gist){
+    const body = { files: {} };
+    body.files[cfg.file] = { content: content };
+    res = await fetch('https://api.github.com/gists/' + gist.id, { method: 'PATCH', headers: syncAuthHeaders(cfg.token), body: JSON.stringify(body) });
+  }else{
+    const body = { description: '资金计划数据（自动创建，勿删）', public: false, files: {} };
+    body.files[cfg.file] = { content: content };
+    res = await fetch('https://api.github.com/gists', { method: 'POST', headers: syncAuthHeaders(cfg.token), body: JSON.stringify(body) });
+  }
+  if(res.status >= 400) throw new Error(await ghErrMsg(res, '上传失败'));
+  const j = await res.json();
+  if(j && j.id){ syncCfg.gistId = j.id; saveSyncCfg(); }
+  return { created: !gist, updatedAt: j.updated_at || '' };
+}
+async function gistFetchContent(cfg, gist){
+  const res = await fetch('https://api.github.com/gists/' + gist.id, { headers: syncAuthHeaders(cfg.token), cache: 'no-store' });
+  if(res.status !== 200) throw new Error(await ghErrMsg(res, '下载失败'));
+  const j = await res.json();
+  const f = j.files && j.files[cfg.file];
+  if(!f) throw new Error('Gist 中找不到文件「' + cfg.file + '」');
+  if(f.truncated) throw new Error('云端文件过大，无法读取');
+  const d = JSON.parse(f.content);
+  if(!d.entries || typeof d.entries !== 'object') throw new Error('云端数据格式不正确');
+  return { raw: f.content, d: d, updatedAt: j.updated_at || '' };
+}
+function applyRemote(d, manual){
+  if(manual){
+    downloadBlob(new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }), '本地备份_' + new Date().toISOString().slice(0, 10) + '.json');
+  }else{
+    try{ localStorage.setItem('cashflow-planner-autobak', JSON.stringify({ at: Date.now(), data: state })); }catch(e){}
+  }
+  state = normalizeState(d);
+  save(); render();
+  if($('#dayModal').classList.contains('open') && currentK) openDay(currentK);
+}
+/* 自动同步心跳：只在“本地或云端有一边变化”时动作；
+   两边都有新改动时停下提示手动处理，绝不自动覆盖。
+   变化判定用内容 hash（GitHub Gist 列表接口的 updated_at 有传播延迟，不可靠）。 */
+async function autoSyncTick(){
+  if(autoBusy || $('#syncUp').disabled) return;
+  if(!syncCfg.auto || !syncCfg.token) return;
+  autoBusy = true;
+  try{
+    const cfg = syncCfg;
+    const localHash = stateHash();
+    const localEmpty = !Object.keys(state.entries).length && !(state.recurring || []).length && !Object.keys(state.actuals || {}).length;
+    const gist = await findGist(cfg);
+    let remoteHash = null, remoteUpdatedAt = '';
+    if(gist){
+      const r = await gistFetchContent(cfg, gist);
+      remoteHash = hashStr(JSON.stringify(normalizeState(r.d), null, 2));
+      remoteUpdatedAt = r.updatedAt;
+    }
+    if(!gist){
+      if(localEmpty){ autoConflict = false; setDot(''); syncCfg.lastSyncAt = Date.now(); return; }
+      const content = JSON.stringify(state, null, 2);
+      const r = await gistPush(cfg, null, content);
+      syncCfg.lastHash = hashStr(content);
+      syncCfg.lastRemoteUpdated = r.updatedAt;
+      syncCfg.lastSyncAt = Date.now();
+      saveSyncCfg(); autoConflict = false; setDot('ok');
+      return;
+    }
+    if(!syncCfg.lastHash){
+      // 本设备从未同步过：先建立基线。两边一致直接记录；本地为空则拉取；都不为空又不一致则停下让用户手动选择。
+      if(remoteHash === localHash){
+        syncCfg.lastHash = localHash;
+        syncCfg.lastRemoteUpdated = remoteUpdatedAt;
+        syncCfg.lastSyncAt = Date.now();
+        saveSyncCfg(); autoConflict = false; setDot('ok');
+      }else if(localEmpty){
+        const r = await gistFetchContent(cfg, gist);
+        applyRemote(r.d, false);
+        syncCfg.lastHash = stateHash();
+        syncCfg.lastRemoteUpdated = remoteUpdatedAt;
+        syncCfg.lastSyncAt = Date.now();
+        saveSyncCfg(); autoConflict = false; setDot('ok');
+      }else{
+        autoConflict = true; setDot('warn');
+        setSyncStatus('⚠ 首次自动同步：本地与云端都有数据且不一致，请打开同步窗口手动选择「上传」或「下载」确定以哪边为准。', false);
+      }
+      return;
+    }
+    const remoteChanged = remoteHash !== syncCfg.lastHash;
+    const localChanged = localHash !== syncCfg.lastHash;
+    if(localChanged && remoteChanged){
+      autoConflict = true; setDot('warn');
+      setSyncStatus('⚠ 本地和云端都有新改动，自动同步已暂停。请打开同步窗口手动选择上传或下载。', false);
+      return;
+    }
+    if(localChanged){
+      const content = JSON.stringify(state, null, 2);
+      const r = await gistPush(cfg, gist, content);
+      syncCfg.lastHash = hashStr(content);
+      syncCfg.lastRemoteUpdated = r.updatedAt;
+      syncCfg.lastSyncAt = Date.now();
+      saveSyncCfg(); autoConflict = false; setDot('ok');
+      return;
+    }
+    if(remoteChanged){
+      const r = await gistFetchContent(cfg, gist);
+      applyRemote(r.d, false);
+      syncCfg.lastHash = stateHash();
+      syncCfg.lastRemoteUpdated = r.updatedAt;
+      syncCfg.lastSyncAt = Date.now();
+      saveSyncCfg(); autoConflict = false; setDot('ok');
+      return;
+    }
+    syncCfg.lastSyncAt = Date.now();
+    saveSyncCfg(); autoConflict = false; setDot('ok');
+  }catch(err){
+    setDot('warn');
+    setSyncStatus('✗ 自动同步失败：' + ((err && err.message) || err), false);
+  }finally{
+    autoBusy = false;
+  }
+}
+function scheduleAutoSync(){
+  if(autoTimer){ clearInterval(autoTimer); autoTimer = null; }
+  setDot('');
+  if(!syncCfg.auto || !syncCfg.token) return;
+  autoSyncTick();
+  autoTimer = setInterval(autoSyncTick, Math.max(1, syncCfg.intervalMin) * 60000);
+}
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible' && syncCfg.auto && syncCfg.token && !autoBusy){
+    if(Date.now() - (syncCfg.lastSyncAt || 0) >= Math.max(1, syncCfg.intervalMin) * 60000) autoSyncTick();
+  }
+});
 async function syncUpload(){
   const cfg = readSyncInputs();
   if(!cfg.token){ showAlert('请先填写 GitHub Token'); return; }
+  if(autoBusy){ setSyncStatus('自动同步进行中，请稍候…', false); return; }
   setSyncBusy(true);
   try{
     const content = JSON.stringify(state, null, 2);
     const gist = await findGist(cfg);
-    let res;
-    if(gist){
-      const body = { files: {} };
-      body.files[cfg.file] = { content: content };
-      res = await fetch('https://api.github.com/gists/' + gist.id, { method: 'PATCH', headers: syncAuthHeaders(cfg.token), body: JSON.stringify(body) });
-    }else{
-      const body = { description: '资金计划数据（自动创建，勿删）', public: false, files: {} };
-      body.files[cfg.file] = { content: content };
-      res = await fetch('https://api.github.com/gists', { method: 'POST', headers: syncAuthHeaders(cfg.token), body: JSON.stringify(body) });
-    }
-    if(res.status >= 400) throw new Error(await ghErrMsg(res, '上传失败'));
-    await res.json();
-    setSyncStatus('✓ 已上传到云端（' + (gist ? '更新' : '新建') + ' Secret Gist）', true);
+    const r = await gistPush(cfg, gist, content);
+    syncCfg.lastHash = hashStr(content);
+    syncCfg.lastRemoteUpdated = r.updatedAt;
+    syncCfg.lastSyncAt = Date.now();
+    saveSyncCfg(); autoConflict = false;
+    if(syncCfg.auto) setDot('ok');
+    setSyncStatus('✓ 已上传到云端（' + (r.created ? '新建' : '更新') + ' Secret Gist）', true);
   }catch(err){
     setSyncStatus('✗ ' + ((err && err.message) || err), false);
   }finally{
@@ -1185,23 +1368,20 @@ async function syncUpload(){
 async function syncDownload(){
   const cfg = readSyncInputs();
   if(!cfg.token){ showAlert('请先填写 GitHub Token'); return; }
+  if(autoBusy){ setSyncStatus('自动同步进行中，请稍候…', false); return; }
   setSyncBusy(true);
   try{
     const gist = await findGist(cfg);
     if(!gist){ setSyncStatus('✗ 云端还没有数据，请先「上传到云端」', false); return; }
-    const res = await fetch('https://api.github.com/gists/' + gist.id, { headers: syncAuthHeaders(cfg.token) });
-    if(res.status !== 200) throw new Error(await ghErrMsg(res, '下载失败'));
-    const j = await res.json();
-    const f = j.files && j.files[cfg.file];
-    if(!f){ setSyncStatus('✗ Gist 中找不到文件「' + cfg.file + '」', false); return; }
-    if(f.truncated){ setSyncStatus('✗ 云端文件过大，无法读取', false); return; }
-    const d = JSON.parse(f.content);
-    if(!d.entries || typeof d.entries !== 'object'){ throw new Error('云端数据格式不正确'); }
+    const { d, updatedAt } = await gistFetchContent(cfg, gist);
     const ver = typeof d.version === 'number' ? d.version : 1;
     const doApply = () => {
-      downloadBlob(new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }), '本地备份_' + new Date().toISOString().slice(0, 10) + '.json');
-      state = normalizeState(d);
-      save(); render();
+      applyRemote(d, true);
+      syncCfg.lastHash = stateHash();
+      syncCfg.lastRemoteUpdated = updatedAt;
+      syncCfg.lastSyncAt = Date.now();
+      saveSyncCfg(); autoConflict = false;
+      if(syncCfg.auto) setDot('ok');
       setSyncStatus('✓ 已从云端下载并覆盖本地', true);
     };
     if(ver > DATA_VERSION){
@@ -1586,12 +1766,32 @@ $('#trashClear').addEventListener('click', clearTrashAll);
 $('#syncBtn').addEventListener('click', () => {
   $('#syncToken').value = syncCfg.token;
   $('#syncFile').value = syncCfg.file;
-  $('#syncStatus').textContent = '';
-  $('#syncStatus').className = 'sync-status';
+  $('#syncAuto').checked = !!syncCfg.auto;
+  $('#syncInterval').value = String(syncCfg.intervalMin || 5);
+  if(autoConflict){
+    setSyncStatus('⚠ 本地和云端都有新改动，自动同步已暂停。请手动选择「上传」或「下载」确定以哪边为准。', false);
+  }else{
+    $('#syncStatus').textContent = '';
+    $('#syncStatus').className = 'sync-status';
+  }
   $('#syncMask').classList.add('open');
 });
 $('#syncClose').addEventListener('click', closeSync);
 $('#syncMask').addEventListener('click', e => { if(e.target === e.currentTarget) closeSync(); });
+$('#syncToken').addEventListener('change', readSyncInputs);
+$('#syncFile').addEventListener('change', readSyncInputs);
+$('#syncAuto').addEventListener('change', () => {
+  readSyncInputs();
+  syncCfg.auto = $('#syncAuto').checked;
+  saveSyncCfg();
+  scheduleAutoSync();
+});
+$('#syncInterval').addEventListener('change', () => {
+  readSyncInputs();
+  syncCfg.intervalMin = parseInt($('#syncInterval').value, 10) || 5;
+  saveSyncCfg();
+  scheduleAutoSync();
+});
 $('#syncUp').addEventListener('click', syncUpload);
 $('#syncDown').addEventListener('click', syncDownload);
 
@@ -1702,6 +1902,7 @@ applyTheme(localStorage.getItem(THEME_KEY) === 'dark' ? 'dark' : 'light');
 purgeTrash();
 
 render();
+scheduleAutoSync();
 </script>
 </body>
 </html>
